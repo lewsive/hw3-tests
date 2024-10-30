@@ -7,7 +7,7 @@
 // Define a struct for a single symbol (an entry in the table)
 typedef struct Symbol {
     char *name;              // Name of the identifier
-    IdAttrs attributes;       // Attributes from the id_attrs module
+    id_attrs attributes;       // Attributes from the id_attrs module
     struct Symbol *next;     // Pointer to the next symbol in case of a collision (for chaining)
 } Symbol;
 
@@ -35,7 +35,7 @@ void enter_scope(SymbolTable *table);
 void exit_scope(SymbolTable *table);
 
 // Adds a new symbol to the current scope
-bool add_symbol(SymbolTable *table, const char *name, IdAttrs attributes);
+bool add_symbol(SymbolTable *table, const char *name, id_attrs attributes);
 
 // Finds a symbol in the current or any enclosing scope
 Symbol *find_symbol(SymbolTable *table, const char *name);

@@ -1,0 +1,501 @@
+Nonterminals useless in grammar
+
+    block
+    constDecls
+    constDecl
+    constDefList
+    constDef
+    varDecls
+    varDecl
+    identList
+    procDecls
+    procDecl
+    stmts
+    empty
+    stmtList
+    stmt
+    assignStmt
+    callStmt
+    ifStmt
+    whileStmt
+    readStmt
+    blockStmt
+    condition
+    dbCondition
+    relOpCondition
+    relOp
+    expr
+
+
+Terminals unused in grammar
+
+    "."
+    "="
+    ","
+    "const"
+    "var"
+    "proc"
+    "call"
+    "begin"
+    "end"
+    "if"
+    "then"
+    "else"
+    "while"
+    "do"
+    "read"
+    "print"
+    "divisible"
+    "by"
+    "=="
+    "!="
+    "<"
+    "<="
+    ">"
+    ">="
+
+
+State 19 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: block_stmt ";"
+
+    2 block_stmt: "(" statements ")"
+
+    3 statements: statement
+    4           | statements statement
+
+    5 statement: printStmt
+    6          | assignmentStmt
+
+    7 printStmt: "+" "(" expression ")"
+
+    8 assignmentStmt: identsym ":=" expression
+
+    9 expression: term
+   10           | expression "+" term
+   11           | expression "-" term
+
+   12 term: factor
+   13     | term "*" factor
+   14     | term "/" factor
+
+   15 factor: numbersym
+   16       | identsym
+   17       | "(" expression ")"
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    identsym <ident> (258) 8 16
+    numbersym <number> (259) 15
+    "+" <token> (260) 7 10
+    "-" <token> (261) 11
+    "*" <token> (262) 13
+    "/" <token> (263) 14
+    "." <token> (264)
+    ";" <token> (265) 1
+    "=" <token> (266)
+    "," <token> (267)
+    ":=" <token> (268) 8
+    "(" <token> (269) 2 7 17
+    ")" <token> (270) 2 7 17
+    "const" <token> (271)
+    "var" <token> (272)
+    "proc" <token> (273)
+    "call" <token> (274)
+    "begin" <token> (275)
+    "end" <token> (276)
+    "if" <token> (277)
+    "then" <token> (278)
+    "else" <token> (279)
+    "while" <token> (280)
+    "do" <token> (281)
+    "read" <token> (282)
+    "print" <token> (283)
+    "divisible" <token> (284)
+    "by" <token> (285)
+    "==" <token> (286)
+    "!=" <token> (287)
+    "<" <token> (288)
+    "<=" <token> (289)
+    ">" <token> (290)
+    ">=" <token> (291)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (37)
+        on left: 0
+    program <block> (38)
+        on left: 1
+        on right: 0
+    block_stmt (39)
+        on left: 2
+        on right: 1
+    statements (40)
+        on left: 3 4
+        on right: 2 4
+    statement (41)
+        on left: 5 6
+        on right: 3 4
+    printStmt <print_stmt> (42)
+        on left: 7
+        on right: 5
+    assignmentStmt (43)
+        on left: 8
+        on right: 6
+    expression (44)
+        on left: 9 10 11
+        on right: 7 8 10 11 17
+    term <expr> (45)
+        on left: 12 13 14
+        on right: 9 10 11 13 14
+    factor <expr> (46)
+        on left: 15 16 17
+        on right: 12 13 14
+
+
+State 0
+
+    0 $accept: • program $end
+
+    "("  shift, and go to state 1
+
+    program     go to state 2
+    block_stmt  go to state 3
+
+
+State 1
+
+    2 block_stmt: "(" • statements ")"
+
+    identsym  shift, and go to state 4
+    "+"       shift, and go to state 5
+
+    statements      go to state 6
+    statement       go to state 7
+    printStmt       go to state 8
+    assignmentStmt  go to state 9
+
+
+State 2
+
+    0 $accept: program • $end
+
+    $end  shift, and go to state 10
+
+
+State 3
+
+    1 program: block_stmt • ";"
+
+    ";"  shift, and go to state 11
+
+
+State 4
+
+    8 assignmentStmt: identsym • ":=" expression
+
+    ":="  shift, and go to state 12
+
+
+State 5
+
+    7 printStmt: "+" • "(" expression ")"
+
+    "("  shift, and go to state 13
+
+
+State 6
+
+    2 block_stmt: "(" statements • ")"
+    4 statements: statements • statement
+
+    identsym  shift, and go to state 4
+    "+"       shift, and go to state 5
+    ")"       shift, and go to state 14
+
+    statement       go to state 15
+    printStmt       go to state 8
+    assignmentStmt  go to state 9
+
+
+State 7
+
+    3 statements: statement •
+
+    $default  reduce using rule 3 (statements)
+
+
+State 8
+
+    5 statement: printStmt •
+
+    $default  reduce using rule 5 (statement)
+
+
+State 9
+
+    6 statement: assignmentStmt •
+
+    $default  reduce using rule 6 (statement)
+
+
+State 10
+
+    0 $accept: program $end •
+
+    $default  accept
+
+
+State 11
+
+    1 program: block_stmt ";" •
+
+    $default  reduce using rule 1 (program)
+
+
+State 12
+
+    8 assignmentStmt: identsym ":=" • expression
+
+    identsym   shift, and go to state 16
+    numbersym  shift, and go to state 17
+    "("        shift, and go to state 18
+
+    expression  go to state 19
+    term        go to state 20
+    factor      go to state 21
+
+
+State 13
+
+    7 printStmt: "+" "(" • expression ")"
+
+    identsym   shift, and go to state 16
+    numbersym  shift, and go to state 17
+    "("        shift, and go to state 18
+
+    expression  go to state 22
+    term        go to state 20
+    factor      go to state 21
+
+
+State 14
+
+    2 block_stmt: "(" statements ")" •
+
+    $default  reduce using rule 2 (block_stmt)
+
+
+State 15
+
+    4 statements: statements statement •
+
+    $default  reduce using rule 4 (statements)
+
+
+State 16
+
+   16 factor: identsym •
+
+    $default  reduce using rule 16 (factor)
+
+
+State 17
+
+   15 factor: numbersym •
+
+    $default  reduce using rule 15 (factor)
+
+
+State 18
+
+   17 factor: "(" • expression ")"
+
+    identsym   shift, and go to state 16
+    numbersym  shift, and go to state 17
+    "("        shift, and go to state 18
+
+    expression  go to state 23
+    term        go to state 20
+    factor      go to state 21
+
+
+State 19
+
+    8 assignmentStmt: identsym ":=" expression •
+   10 expression: expression • "+" term
+   11           | expression • "-" term
+
+    "+"  shift, and go to state 24
+    "-"  shift, and go to state 25
+
+    "+"       [reduce using rule 8 (assignmentStmt)]
+    $default  reduce using rule 8 (assignmentStmt)
+
+    shift/reduce conflict on token "+":
+        8 assignmentStmt: identsym ":=" expression •
+       10 expression: expression • "+" term
+      Example: identsym ":=" expression • "+" "(" expression ")"
+      Shift derivation
+        statements
+        ↳ 3: statement
+             ↳ 6: assignmentStmt
+                  ↳ 8: identsym ":=" expression
+                                     ↳ 10: expression • term
+                                                        ↳ 12: factor
+                                                              ↳ 17: "+" "(" expression ")"
+      Reduce derivation
+        statements
+        ↳ 4: statements                                statement
+             ↳ 3: statement                            ↳ 5: printStmt
+                  ↳ 6: assignmentStmt                       ↳ 7: "+" "(" expression ")"
+                       ↳ 8: identsym ":=" expression •
+
+
+
+State 20
+
+    9 expression: term •
+   13 term: term • "*" factor
+   14     | term • "/" factor
+
+    "*"  shift, and go to state 26
+    "/"  shift, and go to state 27
+
+    $default  reduce using rule 9 (expression)
+
+
+State 21
+
+   12 term: factor •
+
+    $default  reduce using rule 12 (term)
+
+
+State 22
+
+    7 printStmt: "+" "(" expression • ")"
+   10 expression: expression • "+" term
+   11           | expression • "-" term
+
+    "+"  shift, and go to state 24
+    "-"  shift, and go to state 25
+    ")"  shift, and go to state 28
+
+
+State 23
+
+   10 expression: expression • "+" term
+   11           | expression • "-" term
+   17 factor: "(" expression • ")"
+
+    "+"  shift, and go to state 24
+    "-"  shift, and go to state 25
+    ")"  shift, and go to state 29
+
+
+State 24
+
+   10 expression: expression "+" • term
+
+    identsym   shift, and go to state 16
+    numbersym  shift, and go to state 17
+    "("        shift, and go to state 18
+
+    term    go to state 30
+    factor  go to state 21
+
+
+State 25
+
+   11 expression: expression "-" • term
+
+    identsym   shift, and go to state 16
+    numbersym  shift, and go to state 17
+    "("        shift, and go to state 18
+
+    term    go to state 31
+    factor  go to state 21
+
+
+State 26
+
+   13 term: term "*" • factor
+
+    identsym   shift, and go to state 16
+    numbersym  shift, and go to state 17
+    "("        shift, and go to state 18
+
+    factor  go to state 32
+
+
+State 27
+
+   14 term: term "/" • factor
+
+    identsym   shift, and go to state 16
+    numbersym  shift, and go to state 17
+    "("        shift, and go to state 18
+
+    factor  go to state 33
+
+
+State 28
+
+    7 printStmt: "+" "(" expression ")" •
+
+    $default  reduce using rule 7 (printStmt)
+
+
+State 29
+
+   17 factor: "(" expression ")" •
+
+    $default  reduce using rule 17 (factor)
+
+
+State 30
+
+   10 expression: expression "+" term •
+   13 term: term • "*" factor
+   14     | term • "/" factor
+
+    "*"  shift, and go to state 26
+    "/"  shift, and go to state 27
+
+    $default  reduce using rule 10 (expression)
+
+
+State 31
+
+   11 expression: expression "-" term •
+   13 term: term • "*" factor
+   14     | term • "/" factor
+
+    "*"  shift, and go to state 26
+    "/"  shift, and go to state 27
+
+    $default  reduce using rule 11 (expression)
+
+
+State 32
+
+   13 term: term "*" factor •
+
+    $default  reduce using rule 13 (term)
+
+
+State 33
+
+   14 term: term "/" factor •
+
+    $default  reduce using rule 14 (term)

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "utilities.h"
 #include "ast.h"
-#include "spl.tab.h"
+// #include "spl.tab.h"
 
 // Return the file location from an AST
 file_location *ast_file_loc(AST t) {

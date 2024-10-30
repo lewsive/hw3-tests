@@ -16,6 +16,23 @@
 extern void yyerror(const char *filename, const char *msg);
 
 }    /* end of %code requires */
+%union {
+    int number;               // For integer values
+    char *ident;              // For identifiers
+    char token;               // For single-character tokens
+    block_stmt_t block;       // For block statements
+    stmts_t statements;       // For lists of statements
+    stmt_t statement;         // For a single statement
+    expr_t expression;        // For expressions
+    term_t term;             // For terms
+    factor_t factor;          // For factors
+    condition_t condition;     // For conditions (if, while, etc.)
+    db_condition_t dbCondition; // For database conditions
+    rel_op_t relOp;           // For relational operators
+    const_decls_t constDecls; // For constant declarations
+    var_decls_t varDecls;     // For variable declarations
+    proc_decls_t procDecls;   // For procedure declarations
+}
 
 %verbose
 %define parse.lac full
@@ -31,7 +48,6 @@ extern void yyerror(const char *filename, const char *msg);
 %token <token> minussym   "-"
 %token <token> multsym    "*"
 %token <token> divsym     "/"
-
 %token <token> periodsym  "."
 %token <token> semisym    ";"
 %token <token> eqsym      "="
@@ -118,6 +134,50 @@ extern void setProgAST(block_t t);
 %%
  /* Write your grammar rules below and before the next %% */
 
+// Grammar Rules
+program:
+    block_stmt semisym   // A program consists of a block statement followed by a semicolon
+    ;
+
+block_stmt:
+    lparensym statements rparensym  // A block statement enclosed in parentheses
+    ;
+
+statements:
+    statement  // A single statement
+    | statements statement  // Multiple statements
+    ;
+
+statement:
+    printStmt  // A print statement
+    | assignmentStmt  // An assignment statement
+    ;
+
+printStmt:
+    plussym lparensym expression rparensym  // Print statement syntax
+    ;
+
+assignmentStmt:
+    identsym becomessym expression  // Assignment statement syntax
+    ;
+
+expression:
+    term  // An expression can be a term
+    | expression plussym term  // Or an expression followed by a plus and another term
+    | expression minussym term  // Or an expression followed by a minus and another term
+    ;
+
+term:
+    factor  // A term can be a factor
+    | term multsym factor  // Or a term followed by a multiplication and another factor
+    | term divsym factor  // Or a term followed by a division and another factor
+    ;
+
+factor:
+    numbersym  // A factor can be a number
+    | identsym  // Or an identifier
+    | lparensym expression rparensym  // Or an expression enclosed in parentheses
+    ;
 
 
 
