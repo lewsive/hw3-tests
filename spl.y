@@ -134,55 +134,140 @@ extern void setProgAST(block_t t);
 %%
  /* Write your grammar rules below and before the next %% */
 
-// Grammar Rules
 program:
-    block_stmt semisym   // A program consists of a block statement followed by a semicolon
+    block { $$ = setProgAST($1); }
     ;
 
-block_stmt:
-    lparensym statements rparensym  // A block statement enclosed in parentheses
+block:
+    beginsym constDecls varDecls procDecls stmts endsym
+    { $$ = ast_block($1, $2, $3); }
     ;
 
-statements:
-    statement  // A single statement
-    | statements statement  // Multiple statements
+const_decls:
+    /*handle empty const_desls */
+    { $$ = ast_const_decls_empty(empty); }
+    | const_decls const_decl
+    { $$ = ast_const_decls($1, $2); }
     ;
 
-statement:
-    printStmt  // A print statement
-    | assignmentStmt  // An assignment statement
+const_decl:
+    const const_def_list
+    { $$ = ast_const_decl($1); }
     ;
 
-printStmt:
-    plussym lparensym expression rparensym  // Print statement syntax
+const_def_list:
+    const_def
+    { $$ = ast_const_def_list_singleton($1); }
+    | const_def_list commasym const_def
+    { $$ = ast_const_def_list($1, $2); }
     ;
 
-assignmentStmt:
-    identsym becomessym expression  // Assignment statement syntax
+const_def:
+    ident eqsym number
+    { ast_const_def($1, $2); }
     ;
 
-expression:
-    term  // An expression can be a term
-    | expression plussym term  // Or an expression followed by a plus and another term
-    | expression minussym term  // Or an expression followed by a minus and another term
+var_decls:
+    /*handle empty var_decls */
+    { $$ = ast_var_decls_empty(empty); }
+    | var_decls var_decl
+    { $$ = ast_var_decls($1, $2); }
     ;
 
-term:
-    factor  // A term can be a factor
-    | term multsym factor  // Or a term followed by a multiplication and another factor
-    | term divsym factor  // Or a term followed by a division and another factor
+var_decl:
+    var ident_list
+    { $$ = ast_var_decl($1); }
     ;
 
-factor:
-    numbersym  // A factor can be a number
-    | identsym  // Or an identifier
-    | lparensym expression rparensym  // Or an expression enclosed in parentheses
+ident_list:
+    ident
+    { ast_ident_list_singleton($1); }
+    | ident_list commasym ident
+    { $$ = ast_const_def_list($1, $2); }
     ;
 
+proc_decls:
+    /*handle empty proc_decls */
+    { $$ = ast_proc_decls_empty(empty); }
+    | proc_decls proc_decl
+    { $$ = ast_proc_decls($1, $2); }
+    ;
 
+proc_decl:
+    proc ident block
+    { ast_proc_decl($1, $2); }
+    ;
 
+stmts:
+    /*handle empty proc_decls */
+    { $$ = ast_stmts_empty(empty); }
+    | stmt_list
+    { $$ = ast_stmts($1); }
+    ;
+
+empty:
+    empty
+    { $$ = ast_empty($1); }
+    ;
+
+stmt_list:
+    stmt
+    { $$ = ast_stmt_list_singleton($1); }
+    | stmt_list semisym stmt
+    { $$ = ast_stmt_list($1, $2); }
+    ;
+
+stmt:
+    assign_stmt
+    { $$ = ast_stmt_assign($1); }
+    | call_stmt
+    { $$ = ast_stmt_call($1); }
+    | if_stmt
+    { $$ = ast_stmt_if($1); }
+    | while_stmt
+    { $$ = ast_stmt_while($1); }
+    | read_stmt
+    { $$ = ast_stmt_read($1); }
+    | print_stmt
+    { $$ = ast_stmt_print($1); }
+    | block_stmt
+    { $$ = ast_stmt_block($1); }
+    ;
+
+assign_stmt:
+    ident becomessym expr
+    { $$ = ast_assign_stmt($1, $2); }
+    ;
+
+call_stmt:
+    call ident
+    { $$ = ast_call_stmt($1); }
+    ;
+
+ifStmt:
+    "if" condition "then" stmts "else" stmts "end"
+    { $$ = ast_if_then_else_stmt($1, $2, $3); }
+    | "if" condition "then" stmts "end"
+    { $$ = ast_if_then_stmt($1, $2); }
+    ;
+
+while_stmt:
+    while condition do stmts end
+    { $$ = ast_while_stmt($1, $2); }
+    ;
+
+read_stmt:
+    read ident
+    { $$ = ast_read_stmt($1); }
+    ;
+
+print_stmt:
+    print expr
+    { $$ = ast_print_stmt($1); }
+    ;
 
 %%
+
 
 // Set the program's ast to be ast
 void setProgAST(block_t ast) { progast = ast; }
