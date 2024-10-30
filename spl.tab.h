@@ -56,7 +56,7 @@ extern int yydebug;
 
     /* Report an error to the user on stderr */
 extern void yyerror(const char *filename, const char *msg);
-extern enum yytokentype returnPsymbol(const char *punctuation);
+
 
 #line 62 "spl.tab.h"
 
