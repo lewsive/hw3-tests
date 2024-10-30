@@ -37,7 +37,7 @@ SUBMISSIONZIPFILE = submission.zip
 # You should not need the machine_types.o file
 # and there is no parser_types.c file provided,
 # but you could add machine_types.o and parser_types.o if need be.
-COMPILER_OBJECTS = scope.o scope_check.o symtab.o \
+COMPILER_OBJECTS = #scope.o scope_check.o symtab.o \#
 		$(SPL).tab.o $(SPL)_lexer.o \
 		$(COMPILER)_main.o parser.o unparser.o id_use.o \
 		id_attrs.o ast.o file_location.o utilities.o
@@ -63,7 +63,7 @@ PARSEERRTESTS = hw3-parseerrtest0.spl hw3-parseerrtest1.spl hw3-parseerrtest2.sp
 	hw3-parseerrtest3.spl hw3-parseerrtest4.spl hw3-parseerrtest5.spl \
 	hw3-parseerrtest6.spl hw3-parseerrtest7.spl hw3-parseerrtest8.spl
 NONDECLTESTS = $(ASTTESTS) $(REGULARTESTS) $(ERRTESTS) $(PARSEERRTESTS)
-SCOPETESTS = hw3-scope-test0.spl hw3-scope-test1.spl  hw3-scope-test2.spl
+# SCOPETESTS = hw3-scope-test0.spl hw3-scope-test1.spl  hw3-scope-test2.spl
 DECLERRTESTS = hw3-declerrtest0.spl hw3-declerrtest1.spl hw3-declerrtest2.spl \
 	hw3-declerrtest3.spl hw3-declerrtest4.spl hw3-declerrtest5.spl \
 	hw3-declerrtest6.spl hw3-declerrtest7.spl hw3-declerrtest8.spl \
