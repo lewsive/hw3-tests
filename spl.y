@@ -16,23 +16,118 @@
 extern void yyerror(const char *filename, const char *msg);
 
 }    /* end of %code requires */
+%{
+    #include <stdio.h>
+    int yylex();
+    void yyerror(const char *s);
+%}
+
 %union {
-    int number;               // For integer values
-    char *ident;              // For identifiers
-    char token;               // For single-character tokens
-    block_stmt_t block;       // For block statements
-    stmts_t statements;       // For lists of statements
-    stmt_t statement;         // For a single statement
-    expr_t expression;        // For expressions
-    term_t term;             // For terms
-    factor_t factor;          // For factors
-    condition_t condition;     // For conditions (if, while, etc.)
-    db_condition_t dbCondition; // For database conditions
-    rel_op_t relOp;           // For relational operators
-    const_decls_t constDecls; // For constant declarations
-    var_decls_t varDecls;     // For variable declarations
-    proc_decls_t procDecls;   // For procedure declarations
+    int number;
+    char *ident;
+    char token; // For simple token types
+    // Add structures for complex types if necessary
+    struct block {
+        // define members for block
+    } block;
+
+    struct const_decls {
+        // define members for const declarations
+    } const_decls;
+
+    struct var_decls {
+        // define members for var declarations
+    } var_decls;
+
+    struct var_decl {
+        // define members for a single var declaration
+    } var_decl;
+
+    struct idents {
+        // define members for identifiers
+    } idents;
+
+    struct proc_decls {
+        // define members for procedure declarations
+    } proc_decls;
+
+    struct empty {
+        // define members for empty structures
+    } empty;
+
+    struct const_decl {
+        // define members for a single const declaration
+    } const_decl;
+
+    struct const_def {
+        // define members for a const definition
+    } const_def;
+
+    struct const_defs {
+        // define members for const definitions
+    } const_defs;
+
+    struct proc_decl {
+        // define members for a procedure declaration
+    } proc_decl;
+
+    struct stmt {
+        // define members for statements
+    } stmt;
+
+    struct assign_stmt {
+        // define members for assignment statements
+    } assign_stmt;
+
+    struct call_stmt {
+        // define members for call statements
+    } call_stmt;
+
+    struct begin_stmt {
+        // define members for begin statements
+    } begin_stmt;
+
+    struct if_stmt {
+        // define members for if statements
+    } if_stmt;
+
+    struct while_stmt {
+        // define members for while statements
+    } while_stmt;
+
+    struct read_stmt {
+        // define members for read statements
+    } read_stmt;
+
+    struct write_stmt {
+        // define members for write statements
+    } write_stmt;
+
+    struct skip_stmt {
+        // define members for skip statements
+    } skip_stmt;
+
+    struct stmts {
+        // define members for multiple statements
+    } stmts;
+
+    struct condition {
+        // define members for conditions
+    } condition;
+
+    struct odd_condition {
+        // define members for odd conditions
+    } odd_condition;
+
+    struct rel_op_condition {
+        // define members for relational operation conditions
+    } rel_op_condition;
+
+    struct expr {
+        // define members for expressions
+    } expr;
 }
+
 
 %verbose
 %define parse.lac full
