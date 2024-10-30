@@ -94,8 +94,9 @@ block_t progast;
 
 extern void setProgAST(block_t t);
 }
-
 %%
+ /* Write your grammar rules below and before the next %% */
+
 program:
     block { setProgAST($1); }
     ;
@@ -106,7 +107,7 @@ block:
     ;
 
 constDecls:
-    /* Handle empty constDecls */
+    /* handle empty constDecls */
     { $$ = ast_const_decls_empty(); }
     | constDecls constDecl
     { $$ = ast_const_decls($1, $2); }
@@ -130,7 +131,7 @@ constDef:
     ;
 
 varDecls:
-    /* Handle empty varDecls */
+    /* handle empty varDecls */
     { $$ = ast_var_decls_empty(); }
     | varDecls varDecl
     { $$ = ast_var_decls($1, $2); }
@@ -149,7 +150,7 @@ identList:
     ;
 
 procDecls:
-    /* Handle empty procDecls */
+    /* handle empty procDecls */
     { $$ = ast_proc_decls_empty(); }
     | procDecls procDecl
     { $$ = ast_proc_decls($1, $2); }
@@ -161,7 +162,7 @@ procDecl:
     ;
 
 stmts:
-    /* Handle empty stmts */
+    /* handle empty stmts */
     { $$ = ast_stmts_empty(); }
     | stmtList
     { $$ = ast_stmts($1); }
@@ -223,7 +224,62 @@ printStmt:
     { $$ = ast_print_stmt($2); }
     ;
 
-%%
+blockStmt:
+    block
+    { $$ = ast_stmt_block($1); }
+    ;
 
-// Set the program's AST
-void setProgAST(block_t ast) { progast = ast; }
+condition:
+    dbCondition
+    { $$ = ast_condition_db($1); }
+    | relOpCondition
+    { $$ = ast_condition_rel_op($1); }
+    ;
+
+dbCondition:
+    divisiblesym expr bysym expr
+    { $$ = ast_db_condition($2, $4); }
+    ;
+
+relOpCondition:
+    expr relOp expr
+    { $$ = ast_rel_op_condition($1, $2, $3); }
+    ;
+
+relOp:
+    eqeqsym { $$ = $1; }
+    | neqsym { $$ = $1; }
+    | ltsym { $$ = $1; }
+    | leqsym { $$ = $1; }
+    | gtsym { $$ = $1; }
+    | geqsym { $$ = $1; }
+    ;
+
+expr:
+    term
+    { $$ = $1; }
+    | expr plussym term
+    { $$ = ast_expr_binary($1, '+', $3); }
+    | expr minussym term
+    { $$ = ast_expr_binary($1, '-', $3); }
+    ;
+
+term:
+    factor
+    { $$ = $1; }
+    | term multsym factor
+    { $$ = ast_expr_binary($1, '*', $3); }
+    | term divsym factor
+    { $$ = ast_expr_binary($1, '/', $3); }
+    ;
+
+factor:
+    numbersym
+    { $$ = ast_expr_number($1); }
+    | identsym
+    { $$ = ast_expr_ident($1); }
+    | lparensym expr rparensym
+    { $$ = $2; }
+    ;
+
+%%
