@@ -94,6 +94,8 @@ block_t progast;
 
 extern void setProgAST(block_t t);
 }
+
+
 %%
  /* Write your grammar rules below and before the next %% */
 
@@ -103,8 +105,8 @@ program:
 
 block:
     beginsym constDecls varDecls procDecls stmts endsym
-    { $$ = ast_block($2, $3, $4, $5); }
-    ;
+    { $$ = ast_block($2, $3, $4, $5); };
+
 
 constDecls:
     /* handle empty constDecls */
