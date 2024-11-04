@@ -174,10 +174,11 @@ stmtList:
 
 stmts:
     /* handle empty stmts */
-    { $$ = ast_stmts_empty(); }
+    %empty { $$ = ast_stmts_empty(); }
     | stmtList
     { $$ = ast_stmts($1); }
     ;
+
 
 assignStmt:
     identsym becomessym expr
