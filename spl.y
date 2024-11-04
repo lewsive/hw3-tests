@@ -10,8 +10,6 @@
 #include "parser_types.h"
 #include "lexer.h"
 
-empty_t global_empty; // Ensure this is initialized as needed
-
 
 extern void yyerror(const char *filename, const char *msg);
 }
