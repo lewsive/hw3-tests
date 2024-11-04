@@ -165,14 +165,6 @@ procDecl:
 
 empty: /* empty */ { $$ = ast_empty(); };
 
-/* 
-stmts:
-    /* handle empty stmts */
-    { $$ = ast_stmts_empty(); }
-    | stmtList
-    { $$ = ast_stmts($1); }
-    ; */
-
 stmtList:
     stmt
     { $$ = ast_stmt_list_singleton($1); }
@@ -180,21 +172,11 @@ stmtList:
     { $$ = ast_stmt_list($1, $3); }
     ;
 
-stmt:
-    assignStmt
-    { $$ = ast_stmt_assign($1); }
-    | callStmt
-    { $$ = ast_stmt_call($1); }
-    | ifStmt
-    { $$ = ast_stmt_if($1); }
-    | whileStmt
-    { $$ = ast_stmt_while($1); }
-    | readStmt
-    { $$ = ast_stmt_read($1); }
-    | printStmt
-    { $$ = ast_stmt_print($1); }
-    | blockStmt
-    { $$ = ast_stmt_block($1); }
+stmts:
+    /* handle empty stmts */
+    { $$ = ast_stmts_empty(); }
+    | stmtList
+    { $$ = ast_stmts($1); }
     ;
 
 assignStmt:
@@ -231,6 +213,23 @@ printStmt:
 
 blockStmt:
     block
+    { $$ = ast_stmt_block($1); }
+    ;
+
+    stmt:
+    assignStmt
+    { $$ = ast_stmt_assign($1); }
+    | callStmt
+    { $$ = ast_stmt_call($1); }
+    | ifStmt
+    { $$ = ast_stmt_if($1); }
+    | whileStmt
+    { $$ = ast_stmt_while($1); }
+    | readStmt
+    { $$ = ast_stmt_read($1); }
+    | printStmt
+    { $$ = ast_stmt_print($1); }
+    | blockStmt
     { $$ = ast_stmt_block($1); }
     ;
 
