@@ -109,7 +109,7 @@ block:
 
 
 constDecls:
-    %empty { $$ = ast_const_decls_empty(%empty); }
+    %empty { $$ = ast_const_decls_empty(empty); }
     | constDecls constDecl
     { $$ = ast_const_decls($1, $2); }
     ;
