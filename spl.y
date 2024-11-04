@@ -163,10 +163,8 @@ procDecl:
     { $$ = ast_proc_decl($2, $3); }
     ;
 
-empty:
-    empty
-        { $$ = ast_empty($1)}
-        ;
+empty: /* empty */ { $$ = ast_empty(); };
+
 
 stmts:
     /* handle empty stmts */
