@@ -257,23 +257,23 @@ relOp:
     | geqsym { $$ = $1; }
     ;
 
-/* expr:
+expr:
     term
     { $$ = $1; }
     | expr plussym term
-    { $$ = ast_expr_binary($1, '+', $3); }
+    { $$ = ast_expr_binary_op($1, '+', $3); }
     | expr minussym term
-    { $$ = ast_expr_binary($1, '-', $3); }
-    ; */
+    { $$ = ast_expr_binary_op($1, '-', $3); }
+    ;
 
-/* term:
+term:
     factor
     { $$ = $1; }
     | term multsym factor
-    { $$ = ast_expr_binary($1, '*', $3); }
+    { $$ = ast_expr_binary_op($1, '*', $3); }
     | term divsym factor
-    { $$ = ast_expr_binary($1, '/', $3); }
-    ; */
+    { $$ = ast_expr_binary_op($1, '/', $3); }
+    ;
 
 factor:
     numbersym
