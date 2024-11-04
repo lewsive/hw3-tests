@@ -217,10 +217,10 @@ printStmt:
     { $$ = ast_print_stmt($2); }
     ;
 
-blockStmt:
+/* blockStmt:
     block
-    { $$ = ast_stmt_block(ast_block_stmt(ast_block($1))); }
-    ;
+    { $$ = ast_stmt_block(ast_block_stmt($1)); }
+    ; */
 
 stmt:
     assignStmt
