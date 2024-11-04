@@ -293,3 +293,5 @@ factor:
     ;
 
 %%
+
+void setProgAST(block_t ast) { progast = ast; }
