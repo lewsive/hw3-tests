@@ -117,8 +117,6 @@ constDecls:
     { $$ = ast_const_decls($1, $2); }
     ;
 
-
-
 constDecl:
     constsym constDefList
     { $$ = ast_const_decl($2); }
@@ -137,7 +135,7 @@ constDef:
     ;
 
 varDecls:
-    %empty { $$ = ast_var_decls_empty(); }
+    %empty { $$ = ast_var_decls_empty(global_empty); }
     | varDecls varDecl
     { $$ = ast_var_decls($1, $2); }
     ;
@@ -156,7 +154,7 @@ identList:
     ;
 
 procDecls:
-    %empty { $$ = ast_proc_decls_empty(); }
+    %empty { $$ = ast_proc_decls_empty(global_empty); }
     | procDecls procDecl
     { $$ = ast_proc_decls($1, $2); }
     ;
@@ -168,7 +166,7 @@ procDecl:
     ;
 
 empty:
-    %empty { $$ = ast_empty(); }
+    %empty { $$ = ast_empty(global_empty); }
     ;
 
 
@@ -181,7 +179,7 @@ stmtList:
 
 stmts:
     /* handle empty stmts */
-    %empty { $$ = ast_stmts_empty(); }
+    %empty { $$ = ast_stmts_empty(global_empty); }
     | stmtList
     { $$ = ast_stmts($1); }
     ;
