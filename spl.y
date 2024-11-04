@@ -68,7 +68,7 @@ extern void yyerror(const char *filename, const char *msg);
 %type <proc_decls> procDecls
 %type <proc_decl> procDecl
 %type <stmts> stmts
-%type <empty> empty
+%type <empty_ast> empty
 %type <stmt_list> stmtList
 %type <stmt> stmt
 %type <assign_stmt> assignStmt
