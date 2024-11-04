@@ -265,31 +265,14 @@ relOp:
     | geqsym { $$ = $1; }
     ;
 
-expr:
+expr :
     term
-    { $$ = $1; }
-    | expr plussym term
-    {
-        binary_op_expr_t bin_expr;
-        bin_expr.left = $1;
-        bin_expr.right = $3;
-        bin_expr.op = '+';
-        bin_expr.file_loc = /* assign appropriate file location, if needed */;
 
-        $$ = ast_expr_binary_op(bin_expr);
-    }
-    | expr minussym term
-    {
-        binary_op_expr_t bin_expr;
-        bin_expr.left = $1;
-        bin_expr.right = $3;
-        bin_expr.op = '-';
-        bin_expr.file_loc = /* assign appropriate file location, if needed */;
-
-        $$ = ast_expr_binary_op(bin_expr);
-    }
+    | expr "+" term
+        { $$ = ast_expr_binary_op(ast_binary_op_expr($1, $2, $3)); }
+    | expr "-" term
+        { $$ = ast_expr_binary_op(ast_binary_op_expr($1, $2, $3)); }
     ;
-
 
 term:
     factor
