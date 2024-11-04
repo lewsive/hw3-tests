@@ -108,7 +108,7 @@ program:
 
 block:
     constDecls varDecls procDecls stmt
-    { $$ = ast_block($1, $2, $3, $4, $5); };
+    { $$ = ast_block($1, $2, $3, $4); };
 
 
 constDecls:
