@@ -219,7 +219,7 @@ printStmt:
 
 blockStmt:
     block
-    { $$ = ast_stmt_block(ast_block_stmt($1)); }
+    { $$ = ast_stmt_block(ast_block_stmt(ast_block($1))); }
     ;
 
 stmt:
