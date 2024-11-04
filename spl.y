@@ -168,7 +168,7 @@ empty: /* empty */ { $$ = ast_empty(); };
 
 stmts:
     /* handle empty stmts */
-    { $$ = ast_stmts_empty(empty); }
+    { $$ = ast_stmts_empty(empty_t); }
     | stmtList
     { $$ = ast_stmts($1); }
     ;
