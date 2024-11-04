@@ -165,7 +165,7 @@ procDecl:
     ;
 
 empty:
-    %empty { $$ = ast_empty(empty); }
+    %empty { $$ = ast_empty($1); }
     ;
 
 
