@@ -110,7 +110,7 @@ block:
 
 
 constDecls:
-    %empty { $$ = ast_const_decls_empty(global_empty); } // Use the global variable
+    %empty { $$ = ast_const_decls_empty(global_empty); }
     | constDecls constDecl
     { $$ = ast_const_decls($1, $2); }
     ;
