@@ -222,7 +222,7 @@ blockStmt:
     { $$ = ast_stmt_block($1); }
     ;
 
-    stmt:
+stmt:
     assignStmt
     { $$ = ast_stmt_assign($1); }
     | callStmt
@@ -278,9 +278,9 @@ term:
     factor
     { $$ = $1; }
     | term multsym factor
-    { $$ = ast_expr_binary_op($1, '*', $3); }
+    { $$ = ast_expr_binary_op($1, '*', $2); }
     | term divsym factor
-    { $$ = ast_expr_binary_op($1, '/', $3); }
+    { $$ = ast_expr_binary_op($1, '/', $2); }
     ;
 
 factor:
