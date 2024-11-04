@@ -93,6 +93,7 @@ extern void yyerror(const char *filename, const char *msg);
 %code {
 extern int yylex(void);
 block_t progast;
+extern empty_t global_empty;
 
 extern void setProgAST(block_t t);
 }
@@ -111,7 +112,7 @@ block:
 
 
 constDecls:
-    %empty { $$ = ast_const_decls_empty(empty); }
+    %empty { $$ = ast_const_decls_empty(global_empty); }
     | constDecls constDecl
     { $$ = ast_const_decls($1, $2); }
     ;
@@ -134,7 +135,7 @@ constDef:
     ;
 
 varDecls:
-    %empty { $$ = ast_var_decls_empty(empty); }
+    %empty { $$ = ast_var_decls_empty(global_empty); }
     | varDecls varDecl
     { $$ = ast_var_decls($1, $2); }
     ;
@@ -153,7 +154,7 @@ identList:
     ;
 
 procDecls:
-    %empty { $$ = ast_proc_decls_empty(empty); }
+    %empty { $$ = ast_proc_decls_empty(global_empty); }
     | procDecls procDecl
     { $$ = ast_proc_decls($1, $2); }
     ;
@@ -165,7 +166,7 @@ procDecl:
     ;
 
 empty:
-    { $$ = ast_empty($1); }
+    %empty { $$ = ast_empty(global_empty); }
     ;
 
 
@@ -178,7 +179,7 @@ stmtList:
 
 stmts:
     /* handle empty stmts */
-    %empty { $$ = ast_stmts_empty(empty); }
+    %empty { $$ = ast_stmts_empty(global_empty); }
     | stmtList
     { $$ = ast_stmts($1); }
     ;
