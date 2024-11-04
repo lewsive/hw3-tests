@@ -80,7 +80,7 @@ extern void yyerror(const char *filename, const char *msg);
 %type <while_stmt> whileStmt
 %type <read_stmt> readStmt
 %type <print_stmt> printStmt
-%type <block_stmt> blockStmt
+/* %type <block_stmt> blockStmt */
 %type <condition> condition
 %type <db_condition> dbCondition
 %type <rel_op_condition> relOpCondition
@@ -235,8 +235,8 @@ stmt:
     { $$ = ast_stmt_read($1); }
     | printStmt
     { $$ = ast_stmt_print($1); }
-    | blockStmt
-    { $$ = ast_stmt_block($1); }
+    /* | blockStmt
+    { $$ = ast_stmt_block($1); } */
     ;
 
 condition:
