@@ -107,7 +107,7 @@ program:
     ;
 
 block:
-    beginsym constDecls varDecls procDecls stmt endsym
+    beginsym constDecls varDecls procDecls stmts endsym
     { $$ = ast_block($1, $2, $3, $4, $5); };
 
 
