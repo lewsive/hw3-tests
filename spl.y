@@ -10,6 +10,9 @@
 #include "parser_types.h"
 #include "lexer.h"
 
+empty_t global_empty; // Ensure this is initialized as needed
+
+
 extern void yyerror(const char *filename, const char *msg);
 }
 
@@ -109,10 +112,11 @@ block:
 
 
 constDecls:
-    %empty { $$ = ast_const_decls_empty(empty_t t); }
+    %empty { $$ = ast_const_decls_empty(global_empty); } // Use the global variable
     | constDecls constDecl
     { $$ = ast_const_decls($1, $2); }
     ;
+
 
 
 constDecl:
