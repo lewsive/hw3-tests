@@ -163,12 +163,12 @@ procDecl:
     { $$ = ast_proc_decl($2, $3); }
     ;
 
-stmts:
+/* stmts:
     /* handle empty stmts */
-    { $$ = ast_stmts_empty(); }
+    /* { $$ = ast_stmts_empty(); }
     | stmtList
-    { $$ = ast_stmts($1); }
-    ;
+    { $$ = ast_stmts($1); } */
+    //; 
 
 stmtList:
     stmt
@@ -226,10 +226,10 @@ printStmt:
     { $$ = ast_print_stmt($2); }
     ;
 
-blockStmt:
+/* blockStmt:
     block
     { $$ = ast_stmt_block($1); }
-    ;
+    ; */
 
 condition:
     dbCondition
@@ -257,23 +257,23 @@ relOp:
     | geqsym { $$ = $1; }
     ;
 
-expr:
+/* expr:
     term
     { $$ = $1; }
     | expr plussym term
     { $$ = ast_expr_binary($1, '+', $3); }
     | expr minussym term
     { $$ = ast_expr_binary($1, '-', $3); }
-    ;
+    ; */
 
-term:
+/* term:
     factor
     { $$ = $1; }
     | term multsym factor
     { $$ = ast_expr_binary($1, '*', $3); }
     | term divsym factor
     { $$ = ast_expr_binary($1, '/', $3); }
-    ;
+    ; */
 
 factor:
     numbersym
