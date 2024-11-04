@@ -269,10 +269,27 @@ expr:
     term
     { $$ = $1; }
     | expr plussym term
-    { $$ = ast_expr_binary_op($1, '+', $3); }
+    {
+        binary_op_expr_t bin_expr;
+        bin_expr.left = $1;
+        bin_expr.right = $3;
+        bin_expr.op = '+';
+        bin_expr.file_loc = /* assign appropriate file location, if needed */;
+
+        $$ = ast_expr_binary_op(bin_expr);
+    }
     | expr minussym term
-    { $$ = ast_expr_binary_op($1, '-', $3); }
+    {
+        binary_op_expr_t bin_expr;
+        bin_expr.left = $1;
+        bin_expr.right = $3;
+        bin_expr.op = '-';
+        bin_expr.file_loc = /* assign appropriate file location, if needed */;
+
+        $$ = ast_expr_binary_op(bin_expr);
+    }
     ;
+
 
 term:
     factor
