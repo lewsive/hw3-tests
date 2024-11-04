@@ -109,11 +109,11 @@ block:
 
 
 constDecls:
-    /* handle empty constDecls */
-    { $$ = ast_const_decls_empty(); }
+    %empty { $$ = ast_const_decls_empty(); }
     | constDecls constDecl
     { $$ = ast_const_decls($1, $2); }
     ;
+
 
 constDecl:
     constsym constDefList
@@ -133,11 +133,11 @@ constDef:
     ;
 
 varDecls:
-    /* handle empty varDecls */
-    { $$ = ast_var_decls_empty(); }
+    %empty { $$ = ast_var_decls_empty(); }
     | varDecls varDecl
     { $$ = ast_var_decls($1, $2); }
     ;
+
 
 varDecl:
     varsym identList
@@ -152,18 +152,21 @@ identList:
     ;
 
 procDecls:
-    /* handle empty procDecls */
-    { $$ = ast_proc_decls_empty(); }
+    %empty { $$ = ast_proc_decls_empty(); }
     | procDecls procDecl
     { $$ = ast_proc_decls($1, $2); }
     ;
+
 
 procDecl:
     procsym identsym block
     { $$ = ast_proc_decl($2, $3); }
     ;
 
-empty: /* empty */ { $$ = ast_empty(); };
+empty:
+    %empty { $$ = ast_empty(); }
+    ;
+
 
 stmtList:
     stmt
