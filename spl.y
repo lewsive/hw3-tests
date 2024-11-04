@@ -226,10 +226,10 @@ printStmt:
     { $$ = ast_print_stmt($2); }
     ;
 
-/* blockStmt:
+blockStmt:
     block
     { $$ = ast_stmt_block($1); }
-    ; */
+    ;
 
 condition:
     dbCondition
