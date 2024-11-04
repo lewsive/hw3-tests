@@ -11,6 +11,7 @@
 #include "lexer.h"
 
 
+
 extern void yyerror(const char *filename, const char *msg);
 }
 
@@ -92,6 +93,7 @@ extern void yyerror(const char *filename, const char *msg);
 %code {
 extern int yylex(void);
 block_t progast;
+empty_t global_empty;
 
 extern void setProgAST(block_t t);
 }
