@@ -274,13 +274,13 @@ expr :
         { $$ = ast_expr_binary_op(ast_binary_op_expr($1, $2, $3)); }
     ;
 
-term:
-    factor
-    { $$ = $1; }
-    | term multsym factor
-    { $$ = ast_expr_binary_op($1, '*', $2); }
-    | term divsym factor
-    { $$ = ast_expr_binary_op($1, '/', $2); }
+term : 
+    factor 
+
+    | term "*" factor
+        { $$ = ast_expr_binary_op(ast_binary_op_expr($1, $2, $3)); } 
+    | term "/" factor 
+        { $$ = ast_expr_binary_op(ast_binary_op_expr($1, $2, $3)); } 
     ;
 
 factor:
