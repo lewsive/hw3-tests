@@ -58,6 +58,7 @@ extern void yyerror(const char *filename, const char *msg);
 %token <token> gtsym ">"
 %token <token> geqsym ">="
 
+
 %type <block> program
 %type <block> block
 %type <const_decls> constDecls
@@ -79,7 +80,7 @@ extern void yyerror(const char *filename, const char *msg);
 %type <while_stmt> whileStmt
 %type <read_stmt> readStmt
 %type <print_stmt> printStmt
-/* %type <block_stmt> blockStmt */
+%type <block_stmt> blockStmt
 %type <condition> condition
 %type <db_condition> dbCondition
 %type <rel_op_condition> relOpCondition
@@ -87,13 +88,14 @@ extern void yyerror(const char *filename, const char *msg);
 %type <expr> expr
 %type <expr> term
 %type <expr> factor
+%type <token> sign
 
 %start program
 
 %code {
 extern int yylex(void);
 block_t progast;
-extern empty_t global_empty;
+/* extern empty_t global_empty; */
 
 extern void setProgAST(block_t t);
 }
@@ -103,23 +105,21 @@ extern void setProgAST(block_t t);
  /* Write your grammar rules below and before the next %% */
 
 program:
-    block { setProgAST($1); }
+    block periodsym {setProgAST($1);}
     ;
 
-block:
-    beginsym constDecls varDecls procDecls stmts endsym
-    { $$ = ast_block($1, $2, $3, $4, $5); };
-
+block : beginsym constDecls varDecls procDecls stmts endsym
+        { $$ = ast_block($1,$2,$3,$4,$5); }
+        ;
 
 constDecls:
-    %empty { $$ = ast_const_decls_empty(global_empty); }
+    empty { $$ = ast_const_decls_empty($1); }
     | constDecls constDecl
     { $$ = ast_const_decls($1, $2); }
     ;
 
 constDecl:
-    constsym constDefList
-    { $$ = ast_const_decl($2); }
+    constsym constDefList semisym { $$ = ast_const_decl($2); }
     ;
 
 constDefList:
@@ -135,15 +135,14 @@ constDef:
     ;
 
 varDecls:
-    %empty { $$ = ast_var_decls_empty(global_empty); }
+    empty { $$ = ast_var_decls_empty($1); }
     | varDecls varDecl
     { $$ = ast_var_decls($1, $2); }
     ;
 
 
 varDecl:
-    varsym identList
-    { $$ = ast_var_decl($2); }
+    varsym identList semisym { $$ = ast_var_decl($2); }
     ;
 
 identList:
@@ -154,21 +153,23 @@ identList:
     ;
 
 procDecls:
-    %empty { $$ = ast_proc_decls_empty(global_empty); }
+    empty { $$ = ast_proc_decls_empty($1); }
     | procDecls procDecl
     { $$ = ast_proc_decls($1, $2); }
     ;
 
 
 procDecl:
-    procsym identsym block
+    procsym identsym block semisym
     { $$ = ast_proc_decl($2, $3); }
     ;
 
-empty:
-    %empty { $$ = ast_empty(global_empty); }
-    ;
-
+empty : %empty
+        { file_location *file_loc
+	     = file_location_make(lexer_filename(), lexer_line());
+          $$ = ast_empty(file_loc);
+	    }
+        ;
 
 stmtList:
     stmt
@@ -179,7 +180,7 @@ stmtList:
 
 stmts:
     /* handle empty stmts */
-    %empty { $$ = ast_stmts_empty(global_empty); }
+    %empty { $$ = ast_stmts_empty($1); }
     | stmtList
     { $$ = ast_stmts($1); }
     ;
@@ -217,10 +218,10 @@ printStmt:
     { $$ = ast_print_stmt($2); }
     ;
 
-/* blockStmt:
+blockStmt:
     block
-    { $$ = ast_stmt_block(ast_block_stmt(progast)); }
-    ; */
+    { $$ = ast_block_stmt($1); }
+    ; 
 
 stmt:
     assignStmt
@@ -235,8 +236,8 @@ stmt:
     { $$ = ast_stmt_read($1); }
     | printStmt
     { $$ = ast_stmt_print($1); }
-    /* | blockStmt
-    { $$ = ast_stmt_block($1); } */
+    | blockStmt
+    { $$ = ast_stmt_block($1); }
     ;
 
 condition:
@@ -283,14 +284,15 @@ term :
         { $$ = ast_expr_binary_op(ast_binary_op_expr($1, $2, $3)); } 
     ;
 
-factor:
-    numbersym
-    { $$ = ast_expr_number($1); }
-    | identsym
-    { $$ = ast_expr_ident($1); }
-    | lparensym expr rparensym
-    { $$ = $2; }
-    ;
+factor : identsym {$$ = ast_expr_ident($1);}
+       | numbersym {$$ = ast_expr_number($1);}
+       | sign factor {$$ = ast_expr_signed_expr($1, $2);}
+       | "(" expr ")" {$$ = $2;}
+       ;
+
+sign : "-" 
+     | "+" 
+     ;
 
 %%
 
