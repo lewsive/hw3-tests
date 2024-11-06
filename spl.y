@@ -180,7 +180,7 @@ stmtList:
 
 stmts:
     /* handle empty stmts */
-    %empty { $$ = ast_stmts_empty($1); }
+    empty { $$ = ast_stmts_empty($1); }
     | stmtList
     { $$ = ast_stmts($1); }
     ;
